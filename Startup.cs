@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GraphQL.API.Schema.Subscriptions;
 
 namespace GraphQL.API
 {
@@ -20,7 +21,11 @@ namespace GraphQL.API
         {
             services.AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddMutationType<Mutation>();
+                .AddMutationType<Mutation>()
+                .AddSubscriptionType<Subscription>()
+                ;
+
+            services.AddInMemorySubscriptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +37,8 @@ namespace GraphQL.API
             }
 
             app.UseRouting();
+
+            app.UseWebSockets();
 
             app.UseEndpoints(endpoints =>
             {
